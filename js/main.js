@@ -65,5 +65,7 @@ window.addEventListener('click', (event) => {
         `
 
         cartWrapper.insertAdjacentHTML('beforeend', itemHtml)
+        card.querySelector('[data-counter]').innerHTML = '1'
     }
+
 })
