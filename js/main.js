@@ -44,6 +44,8 @@ window.addEventListener('click', (event) => {
       counter.innerHTML = --counter.innerHTML
         } else if (event.target.closest('.cart-wrapper') && parseInt(counter.innerHTML) == 1) {
           event.target.closest('.cart-item').remove()
+          orderForm.style.display = 'none'
+          alertt.style.display = 'block'
         }
         totalCalc() 
       }
