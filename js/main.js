@@ -1,3 +1,17 @@
+const cardWrapper = document.querySelector('.cart-wrapper')
+
+function delivery() {
+  const cartEmpty = document.querySelector('[data-cart-empty]')
+  const orderForm = document.querySelector('#order-form')
+
+  if (cardWrapper.children.length > 0) {
+    cartEmpty.classList.add('none')
+    orderForm.classList.remove('none')
+  } else {
+    cartEmpty.classList.remove('none')
+    orderForm.classList.add('none')
+  }
+}
 
 function totalCalc() {
   const cartItem = document.querySelectorAll('.cart-item')
@@ -26,7 +40,6 @@ function totalCalc() {
 
 totalCalc()
 
-const cardWrapper = document.querySelector('.cart-wrapper')
 
 
 window.addEventListener('click', (event) => {
@@ -44,10 +57,9 @@ window.addEventListener('click', (event) => {
       counter.innerHTML = --counter.innerHTML
         } else if (event.target.closest('.cart-wrapper') && parseInt(counter.innerHTML) == 1) {
           event.target.closest('.cart-item').remove()
-          orderForm.style.display = 'none'
-          alertt.style.display = 'block'
         }
         totalCalc() 
+        delivery()
       }
       
       
@@ -117,22 +129,10 @@ window.addEventListener('click', (event) => {
         }
         
         totalCalc() 
+        delivery()
         card.querySelector('[data-counter]').innerText = "1"
         
       }
       
     })
     
-    
-    const orderForm = document.querySelector('#order-form')
-    const alertt = document.querySelector('.alert-secondary')
-    const btn = document.querySelectorAll('.btn-outline-warning')
-    
-    for (let i = 0; i < btn.length; i++) {
-      btn[i].addEventListener('click', () => {        
-        orderForm.style.display = 'block'
-        alertt.style.display = 'none'
-  })
-}
-
-
