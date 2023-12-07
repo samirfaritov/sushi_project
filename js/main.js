@@ -41,6 +41,9 @@ function totalCalc() {
 totalCalc()
 
 
+let korzina = {
+  sushi: [],
+}
 
 window.addEventListener('click', (event) => {
   if (event.target.dataset.action === 'plus') {
@@ -53,14 +56,17 @@ window.addEventListener('click', (event) => {
   if (event.target.dataset.action === 'minus') {
     const counterWrapper = event.target.closest('.counter-wrapper')
     const counter = counterWrapper.querySelector('[data-counter]')
+
+    
     if (parseInt(counter.innerHTML) > 1) {
       counter.innerHTML = --counter.innerHTML
-        } else if (event.target.closest('.cart-wrapper') && parseInt(counter.innerHTML) == 1) {
-          event.target.closest('.cart-item').remove()
-        }
-        totalCalc() 
-        delivery()
+    } else if (event.target.closest('.cart-wrapper') && parseInt(counter.innerHTML) == 1) {
+      event.target.closest('.cart-item').remove()
+    }
+    totalCalc() 
+    delivery()
       }
+      
       
       
       
@@ -126,13 +132,130 @@ window.addEventListener('click', (event) => {
           `
           
           cardWrapper.insertAdjacentHTML('beforeend', itemHTML)
+          korzina.sushi.push(cardItem)
         }
         
         totalCalc() 
         delivery()
+        
         card.querySelector('[data-counter]').innerText = "1"
         
       }
+
       
+      
+      
+      localStorage.setItem('korzina', JSON.stringify(korzina.sushi))
     })
     
+
+
+
+    function local() {
+      korzina.sushi = JSON.parse(localStorage.getItem('korzina') || '[]')
+
+      for (let i = 0; i < korzina.sushi.length; i++) {
+        let itemHTML = `
+          <div class="cart-item" data-id="${korzina.sushi[i].id}">
+          <div class="cart-item__top">
+          <div class="cart-item__img">
+          <img src="${korzina.sushi[i].img}" alt="" />
+          </div>
+          <div class="cart-item__desc">
+          <div class="cart-item__title">${korzina.sushi[i].title}</div>
+          <div class="cart-item__weight">
+          ${korzina.sushi[i].itemInBox} / ${korzina.sushi[i].weight}
+          </div>
+          
+          <!-- cart-item__details -->
+          <div class="cart-item__details">
+          <div class="items items--small counter-wrapper">
+          <div class="items__control" data-action="minus">
+          -
+          </div>
+          <div class="items__current" data-counter>
+          ${korzina.sushi[i].count}
+          </div>
+          <div class="items__control" data-action="plus">+</div>
+          </div>
+          
+          <div class="price">
+          <div class="price__currency">
+          ${korzina.sushi[i].price}
+          </div>
+          </div>
+          </div>
+          <!-- // cart-item__details -->
+          </div>
+          </div>
+          </div>
+
+
+          
+          `
+          
+          cardWrapper.insertAdjacentHTML('beforeend', itemHTML)
+        }
+      }
+      
+      local()
+      const row = document.querySelector('.row')
+      const colMd = document.querySelectorAll('.col-md-6')
+
+      let a = {
+        id: card.dataset.id,
+        title: card.querySelector('.item-title').innerHTML,
+        itemInBox: card.querySelector('[data-items-in-box]').innerHTML,
+        weight: card.querySelector('.price__weight').innerHTML,
+        price: card.querySelector('.price__currency').innerHTML,
+        img: card.querySelector('.product-img').getAttribute('src'),
+        count: card.querySelector('[data-counter]').innerHTML
+      }
+      
+      for (let i = 0; i < colMd.length; i++) {
+        let innerH = `
+        <!-- Ролл -->
+        <div class="col-md-6">
+        <div class="card mb-4" data-id="01">
+        <img
+        class="product-img"
+        src="img/roll/philadelphia.jpg"
+        alt=""
+          />
+          <div class="card-body text-center">
+          <h4 class="item-title">Филадельфия хит ролл</h4>
+          <p>
+          <small data-items-in-box id="tolibjan" class="text-muted"
+          >6 шт.</small
+          >
+          </p>
+          
+          <div class="details-wrapper">
+          <!-- caunter -->
+          <div class="items counter-wrapper">
+          <div class="items__control" data-action="minus" id="minuss">-</div>
+          <div class="items__current" data-counter id="counter">1</div>
+          <div class="items__control" data-action="plus" id="plyus">+</div>
+          </div>
+          <!-- // caunter -->
+          
+          <div class="price">
+          <div class="price__weight">180г.</div>
+          <div class="price__currency">300 ₽</div>
+          </div>
+          </div>
+          
+          <button
+          data-cart
+          type="button"
+              class="btn btn-block btn-outline-warning"
+            >
+            + в корзину
+            </button>
+            </div>
+            </div>
+            </div>
+            <!-- // Ролл -->
+            `
+            row.insertAdjacentHTML('beforeend', innerH)
+          }
