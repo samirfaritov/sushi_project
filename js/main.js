@@ -29,8 +29,6 @@ function totalCalc() {
   })
   totalPrice.innerHTML = total
 
-  console.log(deliveryCost);
-
   if (total < "600") {
     deliveryCost.innerText = "300₽" 
   } else {
@@ -74,7 +72,6 @@ window.addEventListener('click', (event) => {
         // console.log('cart btn');
         const card = event.target.closest('.card')
         
-        console.log(card);
         
         let cardItem = {
           id: card.dataset.id,
